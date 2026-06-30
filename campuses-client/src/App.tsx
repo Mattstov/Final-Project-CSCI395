@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import AllCampuses from "./pages/AllCampuses";
 import AllStudents from "./pages/AllStudents";
-import SingleCampus from "./pages/SingleCampus.tsx";
+import SingleCampus from "./pages/SingleCampus.tsx"; 
 import AddCampus from "./pages/AddCampus.tsx";
 import EditCampus from "./pages/EditCampus.tsx";
 
