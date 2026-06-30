@@ -10,12 +10,13 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="*" element={<NotFound />} />
         <Route path="/campuses" element={<AllCampuses />} />
         <Route path="/students" element={<AllStudents />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>
   )
 }
+
 
 export default App
