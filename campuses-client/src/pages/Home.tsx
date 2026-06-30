@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 const Home = () => {
 
   return (
-
     <div className="px-2 py-4 flex flex-col items-center justify-center text-center">
       <h1 className="py-4 text-5xl">Campus Find</h1>
       <h2 className="py-4">Campus Find is a management app for college campuses and their students!</h2>
