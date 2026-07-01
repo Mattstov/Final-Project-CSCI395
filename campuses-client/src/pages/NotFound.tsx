@@ -7,7 +7,7 @@ export default function NotFound() {
       <h2 className="py-4 text-5xl">Page Not Found :(</h2>
       
       <div className="flex flex-row items-center gap-4 py-4">
-        <Link to="/" className="bg-blue-600 text-white px-6 py-2 rounded">Go home</Link>
+        <Link to="/" className="dark:bg-blue-900 bg-blue-600 text-white px-6 py-2 rounded">Go home</Link>
       </div>
     </div>
   )
