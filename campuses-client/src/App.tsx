@@ -7,9 +7,19 @@ import AllStudents from "./pages/AllStudents";
 import SingleCampus from "./pages/SingleCampus.tsx"; 
 import AddCampus from "./pages/AddCampus.tsx";
 import EditCampus from "./pages/EditCampus.tsx";
+import useStore from "./store/useStore.ts";
+import { useEffect } from "react";
 
 function App() {
+
+  const { darkMode } = useStore()
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkMode)
+  }, [darkMode])
+
   return (
+    
     <Layout>
       <Routes>
         <Route path="/" element={<Home />} />

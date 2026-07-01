@@ -10,7 +10,7 @@ export default function SingleCampus() {
         ← Back to All Campuses
       </Link>
 
-      <div className="bg-white border rounded-xl shadow-md overflow-hidden">
+      <div className="dark:bg-slate-900 bg-white border rounded-xl shadow-md overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1562774053-701939374585?w=1200"
           alt="Hunter College"

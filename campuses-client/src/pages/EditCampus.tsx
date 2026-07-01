@@ -10,7 +10,7 @@ export default function EditCampus() {
         ← Back to Campus
       </Link>
 
-      <div className="bg-white border rounded-xl shadow-md p-6">
+      <div className="dark:bg-slate-900 bg-white border rounded-xl shadow-md p-6">
         <h1 className="text-4xl font-bold mb-6">Edit Campus</h1>
 
         <form className="space-y-5">
@@ -51,7 +51,7 @@ export default function EditCampus() {
 
           <button
             type="submit"
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+            className="dark:bg-blue-900 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 hover:dark:bg-blue-700"
           >
             Save Changes
           </button>
