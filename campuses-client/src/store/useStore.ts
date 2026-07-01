@@ -1,13 +1,16 @@
 import { create } from 'zustand'
 
-interface AppStore {
+export interface AppStore {
   darkMode: boolean
   toggleDarkMode: () => void
 }
 
 const useStore = create<AppStore>((set) => ({
-  darkMode: false,
-  toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
+  darkMode: localStorage.getItem('darkMode') === 'true',
+  toggleDarkMode: () => set((state) => {
+    const newValue = !state.darkMode
+    localStorage.setItem('darkMode', String(newValue))
+    return { darkMode: newValue }
+  }),
 }))
-
 export default useStore

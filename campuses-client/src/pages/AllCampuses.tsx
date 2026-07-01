@@ -8,14 +8,14 @@ export default function AllCampuses() {
 
         <Link
           to="/campuses/new"
-          className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+          className="dark:bg-blue-900 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
         >
           Add Campus
         </Link>
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="border rounded-xl shadow-md overflow-hidden bg-white">
+        <div className="border rounded-xl shadow-md overflow-hidden dark:bg-slate-900 bg-white">
           <img
             src="https://images.unsplash.com/photo-1562774053-701939374585?w=800"
             alt="Hunter College"
@@ -33,7 +33,7 @@ export default function AllCampuses() {
 
             <Link
               to="/campuses/1"
-              className="inline-block mt-5 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              className="inline-block mt-5 dark:bg-blue-900 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
               View Campus
             </Link>
