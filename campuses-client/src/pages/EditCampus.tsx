@@ -1,21 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import useStore from "../store/useStore";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getCampus, updateCampus } from "../api/campuses";
+import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 
 export default function EditCampus() {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   const campusId = Number(id);
-  const campus = useStore((state) => state.getCampusById(campusId));
-  const updateCampus = useStore((state) => state.updateCampus);
 
-  const [name, setName] = useState(campus?.name || "");
-  const [address, setAddress] = useState(campus?.address || "");
-  const [imageUrl, setImageUrl] = useState(campus?.imageUrl || "");
-  const [description, setDescription] = useState(campus?.description || "");
+  const { data: campus, isLoading, isError } = useQuery({
+    queryKey: ['campus', id],
+    queryFn: () => getCampus(id!),
+  });
+
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [description, setDescription] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (campus) {
+      setName(campus.name);
+      setAddress(campus.address);
+      setImageUrl(campus.imageUrl);
+      setDescription(campus.description);
+    }
+  }, [campus]);
+
+  const mutation = useMutation({
+    mutationFn: (data: { name: string; address: string; imageUrl: string; description: string }) =>
+      updateCampus(campusId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['campuses'] });
+      queryClient.invalidateQueries({ queryKey: ['campus', id] });
+      navigate(`/campuses/${campusId}`);
+    },
+  });
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,7 +49,7 @@ export default function EditCampus() {
       return;
     }
 
-    updateCampus(campusId, {
+    mutation.mutate({
       name: name.trim(),
       address: address.trim(),
       imageUrl: imageUrl.trim(),
@@ -33,18 +57,15 @@ export default function EditCampus() {
     });
 
     setError("");
-    navigate(`/campuses/${campusId}`);
   }
 
-  if (!campus) {
+  if (isLoading) return <Loading />;
+
+  if (isError || !campus) {
     return (
       <div className="max-w-3xl mx-auto p-8">
         <ErrorMessage message="Campus not found." />
-
-        <Link
-          to="/campuses"
-          className="text-blue-600 hover:underline inline-block mt-6"
-        >
+        <Link to="/campuses" className="text-blue-600 hover:underline inline-block mt-6">
           ← Back to All Campuses
         </Link>
       </div>
@@ -53,10 +74,7 @@ export default function EditCampus() {
 
   return (
     <div className="max-w-3xl mx-auto p-8">
-      <Link
-        to={`/campuses/${campus.id}`}
-        className="text-blue-600 hover:underline inline-block mb-6"
-      >
+      <Link to={`/campuses/${campus.id}`} className="text-blue-600 hover:underline inline-block mb-6">
         ← Back to Campus
       </Link>
 

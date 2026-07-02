@@ -1,35 +1,40 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import useStore from "../store/useStore";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getCampus, deleteCampus } from "../api/campuses";
+import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 
 export default function SingleCampus() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const campusId = Number(id);
-  const campus = useStore((state) => state.getCampusById(campusId));
-  const deleteCampus = useStore((state) => state.deleteCampus);
+  const { data: campus, isLoading, isError } = useQuery({
+    queryKey: ['campus', id],
+    queryFn: () => getCampus(id!),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteCampus(Number(id)),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['campuses'] });
+      navigate("/campuses");
+    },
+  });
 
   function handleDelete() {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this campus?",
-    );
-
+    const confirmed = window.confirm("Are you sure you want to delete this campus?");
     if (!confirmed) return;
-
-    deleteCampus(campusId);
-    navigate("/campuses");
+    deleteMutation.mutate();
   }
 
-  if (!campus) {
+  if (isLoading) return <Loading />;
+
+  if (isError || !campus) {
     return (
       <div className="max-w-5xl mx-auto p-8">
         <ErrorMessage message="Campus not found." />
-
-        <Link
-          to="/campuses"
-          className="text-blue-600 hover:underline inline-block mt-6"
-        >
+        <Link to="/campuses" className="text-blue-600 hover:underline inline-block mt-6">
           ← Back to All Campuses
         </Link>
       </div>
@@ -38,27 +43,18 @@ export default function SingleCampus() {
 
   return (
     <div className="max-w-5xl mx-auto p-8">
-      <Link
-        to="/campuses"
-        className="text-blue-600 hover:underline inline-block mb-6"
-      >
+      <Link to="/campuses" className="text-blue-600 hover:underline inline-block mb-6">
         ← Back to All Campuses
       </Link>
 
       <div className="dark:bg-slate-900 bg-white border rounded-xl shadow-md overflow-hidden">
-        <img
-          src={campus.imageUrl}
-          alt={campus.name}
-          className="w-full h-72 object-cover"
-        />
+        <img src={campus.imageUrl} alt={campus.name} className="w-full h-72 object-cover" />
 
         <div className="p-6">
           <div className="flex justify-between items-start gap-4 mb-6">
             <div>
               <h1 className="text-4xl font-bold mb-2">{campus.name}</h1>
-              <p className="text-gray-600 dark:text-gray-300">
-                {campus.address}
-              </p>
+              <p className="text-gray-600 dark:text-gray-300">{campus.address}</p>
             </div>
 
             <div className="flex gap-3">
@@ -68,7 +64,6 @@ export default function SingleCampus() {
               >
                 Edit Campus
               </Link>
-
               <button
                 onClick={handleDelete}
                 className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
@@ -85,10 +80,8 @@ export default function SingleCampus() {
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">Enrolled Students</h2>
-
             <p className="text-gray-600 dark:text-gray-300">
-              Student enrollment will be connected after the Student data and
-              backend are connected.
+              Student enrollment will be connected after Student data is wired up.
             </p>
           </section>
         </div>

@@ -1,10 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useStore from "../store/useStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createCampus } from "../api/campuses";
+
 
 export default function AddCampus() {
   const navigate = useNavigate();
-  const addCampus = useStore((state) => state.addCampus);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: createCampus,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['campuses'] });
+      navigate("/campuses");
+    },
+  });
+
 
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -20,15 +30,14 @@ export default function AddCampus() {
       return;
     }
 
-    addCampus({
+    mutation.mutate({
       name: name.trim(),
       address: address.trim(),
       imageUrl: imageUrl.trim(),
       description: description.trim(),
     });
-
     setError("");
-    navigate("/campuses");
+
   }
 
   return (
