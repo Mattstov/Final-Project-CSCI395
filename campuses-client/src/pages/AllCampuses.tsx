@@ -1,8 +1,17 @@
 import { Link } from "react-router-dom";
-import useStore from "../store/useStore";
+import { useQuery } from "@tanstack/react-query";
+import { getCampuses } from "../api/campuses";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function AllCampuses() {
-  const campuses = useStore((state) => state.campuses);
+  const { data: campuses = [], isLoading, isError } = useQuery({
+    queryKey: ['campuses'],
+    queryFn: getCampuses,
+  });
+
+  if (isLoading) return <Loading />;
+  if (isError) return <ErrorMessage message="Failed to load campuses" />;
 
   return (
     <div className="max-w-6xl mx-auto p-8">
