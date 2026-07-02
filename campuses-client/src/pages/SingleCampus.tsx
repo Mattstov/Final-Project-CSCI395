@@ -1,6 +1,41 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import useStore from "../store/useStore";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function SingleCampus() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const campusId = Number(id);
+  const campus = useStore((state) => state.getCampusById(campusId));
+  const deleteCampus = useStore((state) => state.deleteCampus);
+
+  function handleDelete() {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this campus?",
+    );
+
+    if (!confirmed) return;
+
+    deleteCampus(campusId);
+    navigate("/campuses");
+  }
+
+  if (!campus) {
+    return (
+      <div className="max-w-5xl mx-auto p-8">
+        <ErrorMessage message="Campus not found." />
+
+        <Link
+          to="/campuses"
+          className="text-blue-600 hover:underline inline-block mt-6"
+        >
+          ← Back to All Campuses
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-5xl mx-auto p-8">
       <Link
@@ -12,27 +47,32 @@ export default function SingleCampus() {
 
       <div className="dark:bg-slate-900 bg-white border rounded-xl shadow-md overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1562774053-701939374585?w=1200"
-          alt="Hunter College"
+          src={campus.imageUrl}
+          alt={campus.name}
           className="w-full h-72 object-cover"
         />
 
         <div className="p-6">
           <div className="flex justify-between items-start gap-4 mb-6">
             <div>
-              <h1 className="text-4xl font-bold mb-2">Hunter College</h1>
-              <p className="text-gray-600">695 Park Ave, New York, NY</p>
+              <h1 className="text-4xl font-bold mb-2">{campus.name}</h1>
+              <p className="text-gray-600 dark:text-gray-300">
+                {campus.address}
+              </p>
             </div>
 
             <div className="flex gap-3">
               <Link
-                to="/campuses/1/edit"
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                to={`/campuses/${campus.id}/edit`}
+                className="dark:bg-blue-900 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
               >
                 Edit Campus
               </Link>
 
-              <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+              <button
+                onClick={handleDelete}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
                 Delete Campus
               </button>
             </div>
@@ -40,39 +80,16 @@ export default function SingleCampus() {
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-2">Description</h2>
-            <p>
-              One of the senior colleges of the City University of New York.
-              Hunter College offers many programs and serves students from
-              across New York City.
-            </p>
+            <p>{campus.description}</p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">Enrolled Students</h2>
 
-            <div className="space-y-3">
-              <div className="border rounded-lg p-4 flex justify-between items-center">
-                <div>
-                  <h3 className="font-semibold">John Smith</h3>
-                  <p className="text-gray-600 text-sm">john.smith@email.com</p>
-                </div>
-
-                <button className="text-red-600 hover:underline">
-                  Remove from campus
-                </button>
-              </div>
-
-              <div className="border rounded-lg p-4 flex justify-between items-center">
-                <div>
-                  <h3 className="font-semibold">Jane Doe</h3>
-                  <p className="text-gray-600 text-sm">jane.doe@email.com</p>
-                </div>
-
-                <button className="text-red-600 hover:underline">
-                  Remove from campus
-                </button>
-              </div>
-            </div>
+            <p className="text-gray-600 dark:text-gray-300">
+              Student enrollment will be connected after the Student data and
+              backend are connected.
+            </p>
           </section>
         </div>
       </div>
