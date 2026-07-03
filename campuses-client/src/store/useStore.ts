@@ -5,6 +5,9 @@ export interface AppStore {
   darkMode: boolean;
   toggleDarkMode: () => void;
 
+  studentSearchTerm: string;
+  setStudentSearchTerm: (value: string) => void;
+
   campuses: Campus[];
   addCampus: (campus: Omit<Campus, "id">) => void;
   updateCampus: (id: number, updatedCampus: Omit<Campus, "id">) => void;
@@ -23,6 +26,12 @@ const useStore = create<AppStore>((set, get) => ({
       localStorage.setItem("darkMode", String(newValue));
       return { darkMode: newValue };
     }),
+
+  studentSearchTerm: localStorage.getItem("studentSearchTerm") ?? "",
+  setStudentSearchTerm: (value) => {
+    localStorage.setItem("studentSearchTerm", value);
+    set({ studentSearchTerm: value });
+  },
 
   campuses: [
     {
