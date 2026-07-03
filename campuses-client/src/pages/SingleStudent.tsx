@@ -1,49 +1,79 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteStudent, getStudent, updateStudent } from "../api/students";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
+
+const fallbackStudentImage =
+  "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=1200";
 
 export default function SingleStudent() {
   const { id } = useParams();
-
-  const students = [
-    {
-      id: 1,
-      firstName: "John",
-      lastName: "Smith",
-      email: "john.smith@myhunter.cuny.edu",
-      gpa: 3.7,
-      imageUrl:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=1200",
-      campusId: 1,
-      campusName: "Hunter College",
-      campusAddress: "695 Park Ave, New York, NY",
-    },
-    {
-      id: 2,
-      firstName: "Jane",
-      lastName: "Doe",
-      email: "jane.doe@gmail.com",
-      gpa: 3.9,
-      imageUrl:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=1200",
-      campusId: null,
-      campusName: null,
-      campusAddress: null,
-    },
-    {
-      id: 3,
-      firstName: "Carlos",
-      lastName: "Mendez",
-      email: "carlos.mendez@login.cuny.edu",
-      gpa: 3.4,
-      imageUrl:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200",
-      campusId: 2,
-      campusName: "Baruch College",
-      campusAddress: "55 Lexington Ave, New York, NY",
-    },
-  ];
-
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const studentId = Number(id);
-  const student = students.find((item) => item.id === studentId);
+
+  const {
+    data: student,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["student", id],
+    queryFn: () => getStudent(id!),
+    enabled: Boolean(id),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteStudent(studentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      navigate("/students");
+    },
+  });
+
+  const unenrollMutation = useMutation({
+    mutationFn: () =>
+      updateStudent(studentId, {
+        firstName: student!.firstName,
+        lastName: student!.lastName,
+        email: student!.email,
+        imageUrl: student!.imageUrl ?? "",
+        gpa: student!.gpa,
+        campusId: null,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["student", id] });
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+    },
+  });
+
+  if (!id || Number.isNaN(studentId) || studentId < 1) {
+    return (
+      <div className="max-w-3xl mx-auto p-8">
+        <ErrorMessage message="Invalid student id." />
+      </div>
+    );
+  }
+
+  function handleDelete() {
+    const confirmed = window.confirm("Are you sure you want to delete this student?");
+    if (!confirmed) return;
+    deleteMutation.mutate();
+  }
+
+  function handleUnenroll() {
+    if (!student || !student.campusId) return;
+    unenrollMutation.mutate();
+  }
+
+  if (isLoading) return <Loading />;
+  if (isError)
+    return (
+      <div className="max-w-3xl mx-auto p-8">
+        <ErrorMessage message={error.message || "Failed to load student"} />
+      </div>
+    );
 
   if (!student) {
     return (
@@ -77,7 +107,7 @@ export default function SingleStudent() {
       <div className="bg-white border rounded-xl shadow-md p-6">
         <div className="flex flex-col md:flex-row gap-6 mb-6">
           <img
-            src={student.imageUrl}
+            src={student.imageUrl || fallbackStudentImage}
             alt={`${student.firstName} ${student.lastName}`}
             className="w-full md:w-72 aspect-[3/4] object-cover object-top rounded-lg"
           />
@@ -99,7 +129,10 @@ export default function SingleStudent() {
                 Edit Student
               </Link>
 
-              <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+              <button
+                onClick={handleDelete}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
                 Delete Student
               </button>
             </div>
@@ -112,8 +145,8 @@ export default function SingleStudent() {
           {student.campusId ? (
             <div className="border rounded-lg p-4 flex justify-between items-center gap-4">
               <div>
-                <h3 className="font-semibold text-lg">{student.campusName}</h3>
-                <p className="text-gray-600 text-sm">{student.campusAddress}</p>
+                <h3 className="font-semibold text-lg">{student.campus?.name}</h3>
+                <p className="text-gray-600 text-sm">{student.campus?.address}</p>
               </div>
 
               <div className="flex gap-3">
@@ -124,7 +157,10 @@ export default function SingleStudent() {
                   View Campus
                 </Link>
 
-                <button className="text-red-600 hover:underline">
+                <button
+                  onClick={handleUnenroll}
+                  className="text-red-600 hover:underline"
+                >
                   Unenroll Student
                 </button>
               </div>
@@ -135,6 +171,12 @@ export default function SingleStudent() {
             </div>
           )}
         </section>
+
+        {(deleteMutation.isError || unenrollMutation.isError) && (
+          <p className="mt-4 bg-red-100 text-red-700 border border-red-300 rounded-lg px-4 py-3">
+            {deleteMutation.error?.message || unenrollMutation.error?.message || "Action failed."}
+          </p>
+        )}
       </div>
     </div>
   );

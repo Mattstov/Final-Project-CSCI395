@@ -1,42 +1,26 @@
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getStudents } from "../api/students";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
 
-const students = [
-  {
-    id: 1,
-    firstName: "John",
-    lastName: "Smith",
-    email: "john.smith@email.com",
-    gpa: 3.7,
-    imageUrl:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800",
-    campusId: 1,
-    campusName: "Hunter College",
-  },
-  {
-    id: 2,
-    firstName: "Jane",
-    lastName: "Doe",
-    email: "jane.doe@email.com",
-    gpa: 3.9,
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800",
-    campusId: null,
-    campusName: null,
-  },
-  {
-    id: 3,
-    firstName: "Carlos",
-    lastName: "Mendez",
-    email: "carlos.mendez@email.com",
-    gpa: 3.4,
-    imageUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800",
-    campusId: 2,
-    campusName: "Baruch College",
-  },
-];
+const fallbackStudentImage =
+  "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=800";
 
 export default function AllStudents() {
+  const {
+    data: students = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["students"],
+    queryFn: getStudents,
+  });
+
+  if (isLoading) return <Loading />;
+  if (isError) return <ErrorMessage message={error.message || "Failed to load students"} />;
+
   return (
     <div className="max-w-6xl mx-auto p-8">
       <div className="flex justify-between items-center mb-8">
@@ -50,41 +34,44 @@ export default function AllStudents() {
         </Link>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {students.map((student) => (
-          <div
-            key={student.id}
-            className="border rounded-xl shadow-md overflow-hidden bg-white"
-          >
-            <img
-              src={student.imageUrl}
-              alt={`${student.firstName} ${student.lastName}`}
-              className="w-full aspect-[3/4] object-cover object-top"
-            />
+      {students.length === 0 ? (
+        <p className="text-gray-600">No students have been added yet.</p>
+      ) : (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {students.map((student) => (
+            <div
+              key={student.id}
+              className="border rounded-xl shadow-md overflow-hidden bg-white"
+            >
+              <img
+                src={student.imageUrl || fallbackStudentImage}
+                alt={`${student.firstName} ${student.lastName}`}
+                className="w-full aspect-[3/4] object-cover object-top"
+              />
 
-            <div className="p-4">
-              <h2 className="text-2xl font-semibold mb-2">
-                {student.firstName} {student.lastName}
-              </h2>
+              <div className="p-4">
+                <h2 className="text-2xl font-semibold mb-2">
+                  {student.firstName} {student.lastName}
+                </h2>
 
-              <p className="text-gray-600">{student.email}</p>
-              <p className="text-gray-600 mt-1">GPA: {student.gpa.toFixed(1)}</p>
+                <p className="text-gray-600">{student.email}</p>
+                <p className="text-gray-600 mt-1">GPA: {student.gpa.toFixed(1)}</p>
 
-              <p className="mt-3 text-sm">
-                Enrolled Campus:{" "}
-                {student.campusId ? student.campusName : "Not enrolled"}
-              </p>
+                <p className="mt-3 text-sm">
+                  Enrolled Campus: {student.campus?.name ?? "Not enrolled"}
+                </p>
 
-              <Link
-                to={`/students/${student.id}`}
-                className="inline-block mt-5 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-              >
-                View Student
-              </Link>
+                <Link
+                  to={`/students/${student.id}`}
+                  className="inline-block mt-5 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  View Student
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
