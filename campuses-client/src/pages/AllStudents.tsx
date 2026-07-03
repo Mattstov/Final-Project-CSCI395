@@ -3,11 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getStudents } from "../api/students";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
+import useStore from "../store/useStore";
 
 const fallbackStudentImage =
   "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=800";
 
 export default function AllStudents() {
+  const { studentSearchTerm, setStudentSearchTerm } = useStore();
+
   const {
     data: students = [],
     isLoading,
@@ -20,6 +23,14 @@ export default function AllStudents() {
 
   if (isLoading) return <Loading />;
   if (isError) return <ErrorMessage message={error.message || "Failed to load students"} />;
+
+  const filteredStudents = students.filter((student) => {
+    const term = studentSearchTerm.trim().toLowerCase();
+    if (!term) return true;
+
+    const fullName = `${student.firstName} ${student.lastName}`.toLowerCase();
+    return fullName.includes(term) || student.email.toLowerCase().includes(term);
+  });
 
   return (
     <div className="max-w-6xl mx-auto p-8">
@@ -34,11 +45,29 @@ export default function AllStudents() {
         </Link>
       </div>
 
-      {students.length === 0 ? (
-        <p className="text-gray-600">No students have been added yet.</p>
+      <div className="mb-6">
+        <label htmlFor="student-search" className="block font-semibold mb-2">
+          Filter Students
+        </label>
+        <input
+          id="student-search"
+          type="text"
+          value={studentSearchTerm}
+          onChange={(event) => setStudentSearchTerm(event.target.value)}
+          placeholder="Search by name or email"
+          className="w-full max-w-md border rounded-lg px-4 py-2"
+        />
+      </div>
+
+      {filteredStudents.length === 0 ? (
+        <p className="text-gray-600">
+          {students.length === 0
+            ? "No students have been added yet."
+            : "No students match your current filter."}
+        </p>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {students.map((student) => (
+          {filteredStudents.map((student) => (
             <div
               key={student.id}
               className="border rounded-xl shadow-md overflow-hidden bg-white"
