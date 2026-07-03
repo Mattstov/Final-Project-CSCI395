@@ -42,6 +42,7 @@ export default function EditStudent() {
   } = useQuery({
     queryKey: ["campuses"],
     queryFn: getCampuses,
+    retry: false,
   });
 
   const updateMutation = useMutation({
@@ -92,7 +93,7 @@ export default function EditStudent() {
     updateMutation.mutate(toStudentPayload(values));
   }
 
-  if (isStudentLoading || isCampusesLoading) return <Loading />;
+  if (isStudentLoading) return <Loading />;
 
   if (isStudentError) {
     return (
@@ -220,6 +221,7 @@ export default function EditStudent() {
               value={values.campusId}
               onChange={(event) => updateField("campusId", event.target.value)}
               className="w-full border rounded-lg px-4 py-2"
+              disabled={isCampusesLoading || isCampusesError}
             >
               <option value="">Not enrolled</option>
               {campuses.map((campus) => (

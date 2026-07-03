@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCampuses } from "../api/campuses";
 import { createStudent } from "../api/students";
-import Loading from "../components/Loading";
-import ErrorMessage from "../components/ErrorMessage";
 import { toStudentPayload, validateStudentForm, type StudentFormValues } from "../utils/studentValidation";
 
 export default function AddStudent() {
@@ -24,12 +22,13 @@ export default function AddStudent() {
 
   const {
     data: campuses = [],
-    isLoading,
-    isError,
-    error,
+    isLoading: isCampusesLoading,
+    isError: isCampusesError,
+    error: campusesError,
   } = useQuery({
     queryKey: ["campuses"],
     queryFn: getCampuses,
+    retry: false,
   });
 
   const createMutation = useMutation({
@@ -57,14 +56,6 @@ export default function AddStudent() {
     createMutation.mutate(toStudentPayload(values));
   }
 
-  if (isLoading) return <Loading />;
-  if (isError)
-    return (
-      <div className="max-w-3xl mx-auto p-8">
-        <ErrorMessage message={error.message || "Failed to load campuses"} />
-      </div>
-    );
-
   return (
     <div className="max-w-3xl mx-auto p-8">
       <Link
@@ -76,6 +67,12 @@ export default function AddStudent() {
 
       <div className="bg-white border rounded-xl shadow-md p-6">
         <h1 className="text-4xl font-bold mb-6">Add Student</h1>
+
+        {isCampusesError && (
+          <p className="bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-lg px-4 py-3 mb-5">
+            {campusesError.message || "Campus list is unavailable. You can still create an unenrolled student."}
+          </p>
+        )}
 
         {formError && (
           <p className="bg-red-100 text-red-700 border border-red-300 rounded-lg px-4 py-3 mb-5">
@@ -157,6 +154,7 @@ export default function AddStudent() {
               value={values.campusId}
               onChange={(event) => updateField("campusId", event.target.value)}
               className="w-full border rounded-lg px-4 py-2"
+              disabled={isCampusesLoading || isCampusesError}
             >
               <option value="">Not enrolled</option>
               {campuses.map((campus) => (
