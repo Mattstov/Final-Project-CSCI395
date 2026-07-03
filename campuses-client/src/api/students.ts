@@ -1,6 +1,5 @@
 import type { Student } from "../types/Student";
-
-const BASE_URL = "http://localhost:3000";
+import { API_BASE_URL } from "./base";
 
 type StudentInput = {
   firstName: string;
@@ -28,7 +27,7 @@ function normalizeStudent(raw: Omit<Student, "gpa"> & { gpa: number | string }):
 }
 
 export async function getStudents(): Promise<Student[]> {
-  const res = await fetch(`${BASE_URL}/students`);
+  const res = await fetch(`${API_BASE_URL}/students`);
   if (!res.ok) {
     throw new Error(await parseErrorMessage(res, "Failed to fetch students"));
   }
@@ -38,7 +37,7 @@ export async function getStudents(): Promise<Student[]> {
 }
 
 export async function getStudent(id: string): Promise<Student> {
-  const res = await fetch(`${BASE_URL}/students/${id}`);
+  const res = await fetch(`${API_BASE_URL}/students/${id}`);
   if (!res.ok) {
     throw new Error(await parseErrorMessage(res, "Failed to fetch student"));
   }
@@ -48,7 +47,7 @@ export async function getStudent(id: string): Promise<Student> {
 }
 
 export async function createStudent(payload: StudentInput): Promise<Student> {
-  const res = await fetch(`${BASE_URL}/students`, {
+  const res = await fetch(`${API_BASE_URL}/students`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -63,7 +62,7 @@ export async function createStudent(payload: StudentInput): Promise<Student> {
 }
 
 export async function updateStudent(id: number, payload: StudentInput): Promise<Student> {
-  const res = await fetch(`${BASE_URL}/students/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/students/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -78,7 +77,7 @@ export async function updateStudent(id: number, payload: StudentInput): Promise<
 }
 
 export async function deleteStudent(id: number): Promise<void> {
-  const res = await fetch(`${BASE_URL}/students/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/students/${id}`, {
     method: "DELETE",
   });
 
