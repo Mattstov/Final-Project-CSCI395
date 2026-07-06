@@ -65,7 +65,7 @@ export default function AddStudent() {
         ← Back to All Students
       </Link>
 
-      <div className="bg-white border rounded-xl shadow-md p-6">
+      <div className="dark:bg-slate-900 bg-white border rounded-xl shadow-md p-6">
         <h1 className="text-4xl font-bold mb-6">Add Student</h1>
 
         {isCampusesError && (
@@ -94,7 +94,7 @@ export default function AddStudent() {
               value={values.firstName}
               onChange={(event) => updateField("firstName", event.target.value)}
               placeholder="Example: John"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
             />
           </div>
 
@@ -105,7 +105,7 @@ export default function AddStudent() {
               value={values.lastName}
               onChange={(event) => updateField("lastName", event.target.value)}
               placeholder="Example: Smith"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
             />
           </div>
 
@@ -116,7 +116,7 @@ export default function AddStudent() {
               value={values.email}
               onChange={(event) => updateField("email", event.target.value)}
               placeholder="john.smith@email.com"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
             />
           </div>
 
@@ -127,9 +127,9 @@ export default function AddStudent() {
               value={values.imageUrl}
               onChange={(event) => updateField("imageUrl", event.target.value)}
               placeholder="https://example.com/student.jpg"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
             />
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               Optional. A default image will be used if this is left blank.
             </p>
           </div>
@@ -144,7 +144,7 @@ export default function AddStudent() {
               value={values.gpa}
               onChange={(event) => updateField("gpa", event.target.value)}
               placeholder="3.5"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
             />
           </div>
 
@@ -153,7 +153,7 @@ export default function AddStudent() {
             <select
               value={values.campusId}
               onChange={(event) => updateField("campusId", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
               disabled={isCampusesLoading || isCampusesError}
             >
               <option value="">Not enrolled</option>
@@ -167,7 +167,7 @@ export default function AddStudent() {
 
           <button
             type="submit"
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+            className="dark:bg-blue-900 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
             disabled={createMutation.isPending}
           >
             {createMutation.isPending ? "Creating..." : "Create Student"}

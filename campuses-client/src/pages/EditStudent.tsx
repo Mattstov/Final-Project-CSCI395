@@ -119,9 +119,9 @@ export default function EditStudent() {
           ← Back to All Students
         </Link>
 
-        <div className="bg-white border rounded-xl shadow-md p-6">
+        <div className="dark:bg-slate-900 bg-white border rounded-xl shadow-md p-6">
           <h1 className="text-3xl font-bold mb-2">Student not found</h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-300">
             This student record does not exist in the current data set.
           </p>
         </div>
@@ -168,7 +168,7 @@ export default function EditStudent() {
               type="text"
               value={values.firstName}
               onChange={(event) => updateField("firstName", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
             />
           </div>
 
@@ -178,7 +178,7 @@ export default function EditStudent() {
               type="text"
               value={values.lastName}
               onChange={(event) => updateField("lastName", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
             />
           </div>
 
@@ -188,7 +188,7 @@ export default function EditStudent() {
               type="email"
               value={values.email}
               onChange={(event) => updateField("email", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
             />
           </div>
 
@@ -198,7 +198,7 @@ export default function EditStudent() {
               type="url"
               value={values.imageUrl}
               onChange={(event) => updateField("imageUrl", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
             />
           </div>
 
@@ -211,7 +211,7 @@ export default function EditStudent() {
               step="0.1"
               value={values.gpa}
               onChange={(event) => updateField("gpa", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
             />
           </div>
 
@@ -220,7 +220,7 @@ export default function EditStudent() {
             <select
               value={values.campusId}
               onChange={(event) => updateField("campusId", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
               disabled={isCampusesLoading || isCampusesError}
             >
               <option value="">Not enrolled</option>
@@ -234,7 +234,7 @@ export default function EditStudent() {
 
           <button
             type="submit"
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+            className="dark:bg-blue-900 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
             disabled={updateMutation.isPending}
           >
             {updateMutation.isPending ? "Saving..." : "Save Changes"}

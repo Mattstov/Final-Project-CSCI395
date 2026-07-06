@@ -85,9 +85,9 @@ export default function SingleStudent() {
           ← Back to All Students
         </Link>
 
-        <div className="bg-white border rounded-xl shadow-md p-6">
+        <div className="dark:bg-slate-900 bg-white border rounded-xl shadow-md p-6">
           <h1 className="text-3xl font-bold mb-2">Student not found</h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-300">
             This student record does not exist in the current data set.
           </p>
         </div>
@@ -117,14 +117,14 @@ export default function SingleStudent() {
               <h1 className="text-4xl font-bold mb-2">
                 {student.firstName} {student.lastName}
               </h1>
-              <p className="text-gray-600">{student.email}</p>
-              <p className="text-gray-600 mt-1">GPA: {student.gpa.toFixed(1)}</p>
+              <p className="text-gray-600 dark:text-gray-300">{student.email}</p>
+              <p className="text-gray-600 dark:text-gray-300 mt-1">GPA: {student.gpa.toFixed(1)}</p>
             </div>
 
             <div className="flex gap-3 flex-wrap">
               <Link
                 to={`/students/${student.id}/edit`}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="dark:bg-blue-900 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
               >
                 Edit Student
               </Link>
@@ -143,16 +143,16 @@ export default function SingleStudent() {
           <h2 className="text-2xl font-semibold mb-4">Enrolled Campus</h2>
 
           {student.campusId ? (
-            <div className="border rounded-lg p-4 flex justify-between items-center gap-4">
+            <div className="dark:bg-slate-800 border rounded-lg p-4 flex justify-between items-center gap-4">
               <div>
                 <h3 className="font-semibold text-lg">{student.campus?.name}</h3>
-                <p className="text-gray-600 text-sm">{student.campus?.address}</p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">{student.campus?.address}</p>
               </div>
 
               <div className="flex gap-3">
                 <Link
                   to={`/campuses/${student.campusId}`}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                  className="dark:bg-blue-900 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                 >
                   View Campus
                 </Link>
@@ -166,8 +166,8 @@ export default function SingleStudent() {
               </div>
             </div>
           ) : (
-            <div className="border rounded-lg p-4">
-              <p className="text-gray-700">Not enrolled</p>
+            <div className="dark:bg-slate-800 border rounded-lg p-4">
+              <p className="text-gray-700 dark:text-gray-300">Not enrolled</p>
             </div>
           )}
         </section>

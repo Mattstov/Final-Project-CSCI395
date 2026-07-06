@@ -39,7 +39,7 @@ export default function AllStudents() {
 
         <Link
           to="/students/new"
-          className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+          className="dark:bg-blue-900 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
         >
           Add Student
         </Link>
@@ -55,7 +55,7 @@ export default function AllStudents() {
           value={studentSearchTerm}
           onChange={(event) => setStudentSearchTerm(event.target.value)}
           placeholder="Search by name or email"
-          className="w-full max-w-md border rounded-lg px-4 py-2"
+          className="w-full max-w-md border rounded-lg px-4 py-2 dark:bg-slate-800"
         />
       </div>
 
@@ -70,7 +70,7 @@ export default function AllStudents() {
           {filteredStudents.map((student) => (
             <div
               key={student.id}
-              className="border rounded-xl shadow-md overflow-hidden bg-white"
+              className="border rounded-xl shadow-md overflow-hidden dark:bg-slate-900 bg-white"
             >
               <img
                 src={student.imageUrl || fallbackStudentImage}
@@ -83,8 +83,8 @@ export default function AllStudents() {
                   {student.firstName} {student.lastName}
                 </h2>
 
-                <p className="text-gray-600">{student.email}</p>
-                <p className="text-gray-600 mt-1">GPA: {student.gpa.toFixed(1)}</p>
+                <p className="text-gray-600 dark:text-gray-300">{student.email}</p>
+                <p className="text-gray-600 dark:text-gray-300 mt-1">GPA: {student.gpa.toFixed(1)}</p>
 
                 <p className="mt-3 text-sm">
                   Enrolled Campus: {student.campus?.name ?? "Not enrolled"}
@@ -92,7 +92,7 @@ export default function AllStudents() {
 
                 <Link
                   to={`/students/${student.id}`}
-                  className="inline-block mt-5 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                  className="inline-block mt-5 dark:bg-blue-900 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                 >
                   View Student
                 </Link>
