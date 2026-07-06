@@ -57,5 +57,5 @@ Then open the local URL shown by Vite (usually `http://localhost:5173`).
 
 ## Deployed URLs
 
-- Frontend: https://final-project-csci395-i7qmeomjz-asm-web-dev.vercel.app
+- Frontend: https://finalproject395.vercel.app
 - Backend: https://final-project-server-csci395.onrender.com/
