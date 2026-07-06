@@ -99,12 +99,12 @@ export default function SingleStudent() {
     <div className="max-w-5xl mx-auto p-8">
       <Link
         to="/students"
-        className="text-blue-600 hover:underline inline-block mb-6"
+        className="text-blue-600 dark:text-blue-400 hover:underline inline-block mb-6"
       >
         ← Back to All Students
       </Link>
 
-      <div className="bg-white border rounded-xl shadow-md p-6">
+      <div className="bg-white dark:bg-slate-900 border dark:border-slate-700 rounded-xl shadow-md p-6">
         <div className="flex flex-col md:flex-row gap-6 mb-6">
           <img
             src={student.imageUrl || fallbackStudentImage}
@@ -143,7 +143,7 @@ export default function SingleStudent() {
           <h2 className="text-2xl font-semibold mb-4">Enrolled Campus</h2>
 
           {student.campusId ? (
-            <div className="dark:bg-slate-800 border rounded-lg p-4 flex justify-between items-center gap-4">
+            <div className="dark:bg-slate-800 border dark:border-slate-700 rounded-lg p-4 flex justify-between items-center gap-4">
               <div>
                 <h3 className="font-semibold text-lg">{student.campus?.name}</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">{student.campus?.address}</p>
@@ -159,14 +159,14 @@ export default function SingleStudent() {
 
                 <button
                   onClick={handleUnenroll}
-                  className="text-red-600 hover:underline"
+                  className="text-red-600 dark:text-red-400 hover:underline"
                 >
                   Unenroll Student
                 </button>
               </div>
             </div>
           ) : (
-            <div className="dark:bg-slate-800 border rounded-lg p-4">
+            <div className="dark:bg-slate-800 border dark:border-slate-700 rounded-lg p-4">
               <p className="text-gray-700 dark:text-gray-300">Not enrolled</p>
             </div>
           )}

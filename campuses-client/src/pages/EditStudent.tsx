@@ -101,7 +101,7 @@ export default function EditStudent() {
         <ErrorMessage message={studentError.message || "Failed to load student"} />
         <Link
           to="/students"
-          className="text-blue-600 hover:underline inline-block mt-6"
+          className="text-blue-600 dark:text-blue-400 hover:underline inline-block mt-6"
         >
           ← Back to All Students
         </Link>
@@ -133,12 +133,12 @@ export default function EditStudent() {
     <div className="max-w-3xl mx-auto p-8">
       <Link
         to={`/students/${student.id}`}
-        className="text-blue-600 hover:underline inline-block mb-6"
+        className="text-blue-600 dark:text-blue-400 hover:underline inline-block mb-6"
       >
         ← Back to Student
       </Link>
 
-      <div className="bg-white border rounded-xl shadow-md p-6">
+      <div className="bg-white dark:bg-slate-900 border dark:border-slate-700 rounded-xl shadow-md p-6">
         <h1 className="text-4xl font-bold mb-6">
           Edit Student: {student.firstName} {student.lastName}
         </h1>
@@ -168,7 +168,7 @@ export default function EditStudent() {
               type="text"
               value={values.firstName}
               onChange={(event) => updateField("firstName", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800 dark:border-slate-600 dark:text-white"
             />
           </div>
 
@@ -178,7 +178,7 @@ export default function EditStudent() {
               type="text"
               value={values.lastName}
               onChange={(event) => updateField("lastName", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800 dark:border-slate-600 dark:text-white"
             />
           </div>
 
@@ -188,7 +188,7 @@ export default function EditStudent() {
               type="email"
               value={values.email}
               onChange={(event) => updateField("email", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800 dark:border-slate-600 dark:text-white"
             />
           </div>
 
@@ -198,7 +198,7 @@ export default function EditStudent() {
               type="url"
               value={values.imageUrl}
               onChange={(event) => updateField("imageUrl", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800 dark:border-slate-600 dark:text-white"
             />
           </div>
 
@@ -211,7 +211,7 @@ export default function EditStudent() {
               step="0.1"
               value={values.gpa}
               onChange={(event) => updateField("gpa", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800 dark:border-slate-600 dark:text-white"
             />
           </div>
 
@@ -220,7 +220,7 @@ export default function EditStudent() {
             <select
               value={values.campusId}
               onChange={(event) => updateField("campusId", event.target.value)}
-              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800"
+              className="w-full border rounded-lg px-4 py-2 dark:bg-slate-800 dark:border-slate-600 dark:text-white"
               disabled={isCampusesLoading || isCampusesError}
             >
               <option value="">Not enrolled</option>
