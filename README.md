@@ -1,6 +1,6 @@
 # Campuses & Students — Client
 
-Frontend for a CRUD app that manages college campuses and the students enrolled at them. Built for the CSCI 39548 final project at Hunter College. Pairs with the [server repo](https://github.com/Mattstov/Final-Project-Server-CSCI395).
+Frontend for a CRUD app that manages college campuses and the students enrolled at them. Pairs with the [server repo](https://github.com/Mattstov/Final-Project-Server-CSCI395).
 
 ## What it does
 
