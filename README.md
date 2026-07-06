@@ -23,5 +23,5 @@ Frontend for a CRUD app that manages college campuses and the students enrolled 
 
 ## Deployed URLs
 
-- Frontend: TBD
+- Frontend: https://final-project-csci395-i7qmeomjz-asm-web-dev.vercel.app
 - Backend: https://final-project-server-csci395.onrender.com/
