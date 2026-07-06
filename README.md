@@ -21,6 +21,40 @@ Frontend for a CRUD app that manages college campuses and the students enrolled 
 - Zustand for client-only state (dark mode, student search filter)
 - Tailwind CSS for styling
 
+## Run Locally
+
+1. Clone this repository and move into the client folder:
+
+```bash
+cd campuses-client
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create an environment file from the example:
+
+```bash
+cp .env.example .env
+```
+
+4. Set the API URL in `.env`:
+
+```bash
+VITE_API_BASE_URL=https://final-project-server-csci395.onrender.com
+```
+
+5. Start the dev server:
+
+```bash
+npm run dev
+```
+
+Then open the local URL shown by Vite (usually `http://localhost:5173`).
+
 ## Deployed URLs
 
 - Frontend: https://final-project-csci395-i7qmeomjz-asm-web-dev.vercel.app
